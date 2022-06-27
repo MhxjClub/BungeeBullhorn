@@ -1,0 +1,16 @@
+main: net.kazuha.bbh.lkq2
+author: KazuhaAyato
+name: BungeeBullhorn
+description: Null:(
+version: 1.3.2
+permissions:
+  bhorn.op:
+    default: op
+  bhorn.at:
+    default: true
+  bhorn.atall:
+    default: op
+  bhorn.use:
+    default: true
+  bhorn.pm:
+    default: true
