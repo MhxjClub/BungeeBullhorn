@@ -2,6 +2,7 @@ package net.kazuha.bbh;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
+import net.md_5.bungee.config.Configuration;
 
 import java.util.List;
 public class ShoutUtils {
@@ -15,12 +16,15 @@ public class ShoutUtils {
         }
     }
     public static String getGroupName(String serverid) {
-        for(int i=0; i <= 256; i++){
-            List<String> Server = lkq2.config.getStringList("server-groups.group"+i+".servers");
+        Configuration sect = lkq2.config.getSection("server-groups");
+        if(sect == null) {
+            return serverid;
+        }
+        for(String name : sect.getKeys()){
+            List<String> Server = sect.getStringList(name+".servers");
             if (Server.contains(serverid)){
-                return lkq2.config.getString("server-groups.group"+i+".displayname");
+                return sect.getString(name+".displayname");
             }
-
         }
         return serverid;
     }
@@ -29,28 +33,30 @@ public class ShoutUtils {
         return arg.contains(serverid);
     }
     public static String getTeleportServer(String serverid) {
-        for(int i=0; i <= 256; i++){
-            List<String> Server = lkq2.config.getStringList("server-groups.group"+i+".servers");
-            if(lkq2.config.getString("server-groups.group" + i + ".teleport-server").equals("-1" )){
-                return serverid;
+        Configuration sect = lkq2.config.getSection("server-groups");
+        if(sect == null)return serverid;
+        for(String name : sect.getKeys()){
+            List<String> Server = sect.getStringList(name+".servers");
+            if (Server.contains(serverid)){
+                if(sect.getString(name+".teleport-server").equalsIgnoreCase("none")){
+                    return serverid;
+                }
+                return sect.getString(name+".teleport-server");
             }
-            if (Server.contains(serverid) && !lkq2.config.getString("server-groups.group" + i + ".teleport-server").equals("-1")){
-                return lkq2.config.getString("server-groups.group"+i+".teleport-server");
-            }
-
         }
     return serverid;
     }
     public static boolean isServerleagal(String serverid){
-        for(int i=0; i <= 256; i++){
-            List<String> Server = lkq2.config.getStringList("server-groups.group"+i+".servers");
+        Configuration sect = lkq2.config.getSection("server-groups");
+
+        for(String name : sect.getKeys()) {
+            List<String> Server = sect.getStringList(name+".servers");
             if (Server.contains(serverid)){
-                if(lkq2.config.getString("server-groups.group" + i + ".teleport-server").equals(serverid)){
+                if(sect.getString(name+".teleport-server").equals(serverid)){
                     return true;
                 }
                 return false;
             }
-
         }
         return true;
     }

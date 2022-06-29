@@ -34,7 +34,6 @@ command: hh
 disabled-servers:
   - disabledserverhere
 server-groups:
-  #必须像group1, group2, group3这样写
   group1:
     displayname: "起床战争"
     servers:
@@ -44,7 +43,7 @@ server-groups:
       - bw-4
       - bwhub
     teleport-server: bwhub
-    #如果teleport-server = -1
+    #如果teleport-server = none
     #那么禁用，直接传送到玩家所在服务器
   group2:
     displayname: "空岛战争"
