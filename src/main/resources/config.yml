@@ -1,6 +1,21 @@
 #BUNGEEBULLHORN CONFIGURATION
-#KAZUHA AYATO 2022
-#V1.3
+#BY KAZUHA AYATO @ MHXJ.CLUB
+#V1.6
+anti-badword:
+  #反脏话 有这个因为我服里有人涉黄
+  #模式: cloud, off, list
+  #cloud: 云端辨别
+  #off: 不启用
+  #list: 使用列表判定
+  #combine: 云端+列表结合
+  mode: cloud
+  check-globaly: true
+  replace: "❤"
+  #仅在mode = list/combine 有效
+  bad-word-list:
+    - "SB"
+    - "你妈死了"
+    - "操你妈"
 format: "&8[&f全服喊话&8][&3%server%&8]&7%player% &8: &f%message%"
 #可用变量：
 #%server% 玩家所在子服

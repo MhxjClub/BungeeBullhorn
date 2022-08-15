@@ -7,6 +7,7 @@ import net.md_5.bungee.api.plugin.Command;
 
 import java.util.HashMap;
 import java.util.Map;
+import static net.kazuha.bbh.lkq2.*;
 
 /*
 private:
@@ -59,7 +60,10 @@ public class pm extends Command {
         StringBuilder sendmag = new StringBuilder();
         for(int c=1; c<arg.length; c++)sendmag.append(arg[c]).append(" ");
         String pmformat = lkq2.config.getString("private.format");
-        pmformat = ChatColor.translateAlternateColorCodes('&',pmformat.replace("%sender%", String.valueOf(sender)).replace("%reciever%", arg[0]).replace("%message%", String.valueOf(sendmag)));
+        String o = sendmag.toString();
+        o = CheckWordSensitive.CheckWords(o);
+        pmformat = ChatColor.translateAlternateColorCodes('&',pmformat.replace("%sender%", String.valueOf(sender)).replace("%reciever%", ProxyServer.getInstance().getPlayer(arg[0]).getName()).replace("%message%", o));
+
         ProxyServer.getInstance().getPlayer(arg[0]).sendMessage(pmformat);
         ProxyServer.getInstance().getConsole().sendMessage(pmformat);
         sender.sendMessage(pmformat);

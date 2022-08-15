@@ -1,5 +1,12 @@
 package net.kazuha.bbh;
 
+import net.luckperms.api.model.group.Group;
+import net.luckperms.api.model.user.User;
+import net.luckperms.api.node.Node;
+import net.luckperms.api.node.NodeType;
+import net.luckperms.api.node.types.ChatMetaNode;
+import net.luckperms.api.node.types.InheritanceNode;
+import net.luckperms.api.node.types.PrefixNode;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
@@ -10,6 +17,11 @@ import net.md_5.bungee.api.plugin.Command;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import static net.kazuha.bbh.lkq2.config;
+import static net.kazuha.bbh.lkq2.luckPerms;
 
 public class Servershout extends Command {
     public Map<CommandSender, Long> cd = new HashMap<>();
@@ -42,8 +54,15 @@ public class Servershout extends Command {
             cd.put(sender, System.currentTimeMillis());
             String message = lkq2.config.getString("format");
             //Placeholder替换
+            User user = luckPerms.getUserManager().getUser(sender.getName());
+
+            String prefix = user.getCachedData().getMetaData().getPrefix();
+            String suffix = user.getCachedData().getMetaData().getSuffix();
+            if(prefix == null)prefix = " ";
+            if(suffix == null)suffix = " ";
+
             message = message.replace("%server%", ShoutUtils.getGroupName(((ProxiedPlayer) sender).getServer().getInfo().getName()));
-            message = message.replace("%player%", sender.getName());
+            message = message.replace("%player%", prefix + sender.getName() + suffix);
             message = ChatColor.translateAlternateColorCodes('&', message);
             //替换颜色代码
             StringBuilder gomessage = new StringBuilder();
@@ -52,6 +71,7 @@ public class Servershout extends Command {
                 //加入空格
             }
             String rawmsg = gomessage.toString();
+            rawmsg = CheckWordSensitive.CheckWords(rawmsg);
             if (rawmsg.contains("@all") || rawmsg.contains("@全体")) {
                 if (!sender.hasPermission("bhorn.atall")) {
                     sender.sendMessage("§c你没有@全体的权限！");
@@ -63,6 +83,7 @@ public class Servershout extends Command {
                     p.sendTitle(title);
                 }
             }
+            rawmsg = CheckWordSensitive.CheckWords(rawmsg);
             //判断点击传送是否启用？
             if (lkq2.config.getBoolean("teleport")) {
                 for (ProxiedPlayer p : ProxyServer.getInstance().getPlayers()) {
@@ -91,6 +112,7 @@ public class Servershout extends Command {
                             pc.sendTitle(title);
                         }
                     }
+
                     message = message.replace("%message%", rawmsg);
                     p.sendMessage(message);
                 }

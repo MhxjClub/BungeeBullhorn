@@ -1,8 +1,9 @@
 main: net.kazuha.bbh.lkq2
 author: KazuhaAyato
 name: BungeeBullhorn
+depend: [LuckPerms]
 description: Null:(
-version: 1.3.2
+version: 1.4.2
 permissions:
   bhorn.op:
     default: op

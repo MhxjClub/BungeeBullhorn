@@ -1,0 +1,4 @@
+
+*.class
+target/classes/plugin.yml
+target/classes/config.yml
